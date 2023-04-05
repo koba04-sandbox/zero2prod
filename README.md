@@ -1,5 +1,8 @@
 # A sandbox for Zero to Production in Rust
 
+- [Book](https://www.zero2prod.com/)
+- [Repository](https://github.com/LukeMathWalker/zero-to-production)
+
 ## Setup
 
 ```
