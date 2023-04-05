@@ -4,7 +4,6 @@
 
 ```
 cargo install cargo-watch
-cargo install tarpaulin
 ```
 
 ## Commands
@@ -18,6 +17,7 @@ cargo watch -x check -x test -x run
 ### Measure code coverage
 
 ```
+cargo install tarpaulin
 cargo tarpaulin --ignore-tests
 ```
 
