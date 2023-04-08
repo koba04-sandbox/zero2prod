@@ -50,7 +50,7 @@ jobs:
             # It may also be useful if a newer version of a dependency is published that no longer builds on your system, or has other problems
 
       - name: Install postgresql-client
-        run: sudo apt-get update && usdo apt-get install postgresql-client -y
+        run: sudo apt-get update && sudo apt-get install postgresql-client -y
 
       - name: Migrate database
         run: SKIP_DOCKER=true ./scripts/init_db.sh
@@ -98,7 +98,7 @@ jobs:
             --no-default-features
             --locked
       - name: Install postgresql-client
-        run: sudo apt-get update && usdo apt-get install postgresql-client -y
+        run: sudo apt-get update && sudo apt-get install postgresql-client -y
       - name: Migrate database
         run: SKIP_DOCKER=true ./scripts/init_db.sh
       - name: Linting
