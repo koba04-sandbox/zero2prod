@@ -67,7 +67,7 @@ jobs:
         with:
           components: rustfmt
       - name: Enforce formatting
-        uses: cargo fmt --check
+        run: cargo fmt --check
 
   clippy:
     name: Clippy
