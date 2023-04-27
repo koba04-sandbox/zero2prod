@@ -2,3 +2,7 @@ application:
   host: 0.0.0.0
 database:
   require_ssl: true
+  email_client:
+    base_url: "https://api.postmarkapp.com"
+    # should replace the email with the registered email
+    sender_email: "test@gmail.com"
