@@ -8,7 +8,7 @@ use actix_web::{
     web, HttpRequest, HttpResponse, ResponseError,
 };
 use anyhow::Context;
-use argon2::{Argon2, PasswordVerifier, PasswordHash};
+use argon2::{Argon2, PasswordHash, PasswordVerifier};
 use base64::Engine;
 use reqwest::header;
 use secrecy::ExposeSecret;
@@ -99,14 +99,12 @@ async fn validate_credentials(
     Argon2::default()
         .verify_password(
             credentials.password.expose_secret().as_bytes(),
-            &expected_password_hash
+            &expected_password_hash,
         )
         .context("Invalid password.")
         .map_err(PublishError::AuthError)?;
 
     Ok(user_id)
-
-
 }
 
 #[tracing::instrument(
