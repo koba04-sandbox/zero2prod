@@ -1,8 +1,4 @@
-use actix_web::{
-    cookie::Cookie,
-    http::header::ContentType,
-    HttpRequest, HttpResponse,
-};
+use actix_web::{cookie::Cookie, http::header::ContentType, HttpRequest, HttpResponse};
 
 pub async fn login_form(request: HttpRequest) -> HttpResponse {
     let error_html = match request.cookie("_flash") {
