@@ -3,7 +3,7 @@ use std::fmt::Write;
 use actix_web::{http::header::ContentType, HttpResponse};
 use actix_web_flash_messages::IncomingFlashMessages;
 
-pub async fn change_password_form(
+pub async fn post_newsletter_form(
     flash_message: IncomingFlashMessages,
 ) -> Result<HttpResponse, actix_web::Error> {
     let mut msg_html = String::new();
@@ -19,39 +19,39 @@ pub async fn change_password_form(
         <html lang="en">
             <head>
                 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-                <title>Change Password</title>
+                <title>Post a Newsletter</title>
             </head>
             <body>
                 {msg_html}
-                <form action="/admin/password" method="post">
+                <form action="/admin/newsletters" method="post">
                     <label>
-                        Current Password
+                        Title
                         <input
-                            type="password"
-                            placeholder="Enter current password"
-                            name="current_password"
+                            type="text"
+                            placeholder="Enter Title"
+                            name="title"
                         >
                     </label>
                     <br>
                     <label>
-                        New Password
+                        Text Content
                         <input
-                            type="password"
-                            placeholder="Enter new password"
-                            name="new_password"
+                            type="text"
+                            placeholder="Enter Text Content"
+                            name="text_content"
                         >
                     </label>
                     <br>
                     <label>
-                        Confirm new Password
+                        HTML Content
                         <input
-                            type="password"
-                            placeholder="Type the new password again"
-                            name="new_password_check"
+                            type="text"
+                            placeholder="Enter HTML Content"
+                            name="html_content"
                         >
                     </label>
                     <br>
-                    <button type="submit">Change Password</button>
+                    <button type="submit">Send</button>
                 </form>
                 <p><a href="/admin/dashboard">&lt; - Back</a></p>
             </body>
