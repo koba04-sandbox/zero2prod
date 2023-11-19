@@ -51,7 +51,7 @@ pub async fn post_newsletter_form(
                         >
                     </label>
                     <br>
-                    <input type="hidden" name="idempotency_key" value="{idempotency_key}>
+                    <input type="hidden" name="idempotency_key" value="{idempotency_key}">
                     <button type="submit">Send</button>
                 </form>
                 <p><a href="/admin/dashboard">&lt; - Back</a></p>

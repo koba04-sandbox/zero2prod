@@ -14,6 +14,11 @@ use crate::helpers::{assert_is_redirect_to, spawn_app, ConfirmationLinks, TestAp
 async fn newsletters_are_not_delivered_to_unconfirmed_subscribers() {
     // Arrange
     let app = spawn_app().await;
+    app.post_login(&serde_json::json!({
+        "username": &app.test_user.username,
+        "password": &app.test_user.password
+    }))
+    .await;
     create_unconfirmed_subscriber(&app).await;
 
     Mock::given(any())
@@ -31,9 +36,12 @@ async fn newsletters_are_not_delivered_to_unconfirmed_subscribers() {
         "idempotency_key": uuid::Uuid::new_v4().to_string()
     });
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
+    assert_is_redirect_to(&response, "/admin/newsletters");
 
-    // Assert
-    assert_eq!(response.status().as_u16(), 303);
+    let html_page = app.get_publish_newsletter_html().await;
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted - emails will go out shortly.</i></p>"
+    ));
 
     app.dispatch_all_pending_emails().await;
 }
@@ -65,9 +73,12 @@ async fn newsletters_are_delivered_to_confirmed_subscribers() {
         "idempotency_key": uuid::Uuid::new_v4().to_string()
     });
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
+    assert_is_redirect_to(&response, "/admin/newsletters");
 
-    // Assert
-    assert_eq!(response.status().as_u16(), 303);
+    let html_page = app.get_publish_newsletter_html().await;
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted - emails will go out shortly.</i></p>"
+    ));
 
     app.dispatch_all_pending_emails().await;
 }
@@ -178,12 +189,16 @@ async fn newsletter_creation_is_idempotent() {
     assert_is_redirect_to(&response, "/admin/newsletters");
 
     let html_page = app.get_publish_newsletter_html().await;
-    assert!(html_page.contains("<p><i>The newsletter issue has been published!</i></p>"));
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted - emails will go out shortly.</i></p>"
+    ));
+
     let response = app.post_publish_newsletter(&newsletter_request_body).await;
     assert_is_redirect_to(&response, "/admin/newsletters");
-
     let html_page = app.get_publish_newsletter_html().await;
-    assert!(html_page.contains("<p><i>The newsletter issue has been published!</i></p>"));
+    assert!(html_page.contains(
+        "<p><i>The newsletter issue has been accepted - emails will go out shortly.</i></p>"
+    ));
 
     app.dispatch_all_pending_emails().await;
 }
